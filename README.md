@@ -7,3 +7,7 @@ The project is based on this [paper](https://dl.acm.org/doi/pdf/10.1145/258734.2
 Documentation using [Sphinx](https://www.sphinx-doc.org/en/master/) syntax, follow the example in the [Sphinx for Matlab repository](https://github.com/sphinx-contrib/matlabdomain)
 
 coordinates as in [info](./info/coordinates.png)
+
+Requirements:
+Matlab
+[Image Processing Toolbox](https://de.mathworks.com/help/images/index.html)
