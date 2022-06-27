@@ -20,3 +20,17 @@ function mask = update_mask(subtract, main_mask, new_mask)
         mask = main_mask + new_mask;
     end
 end
+
+function fix_line(line, lines)
+    % fixes one of the 4 spider lines (through vanish point and inner rectangle corner)
+    % and sets the other 3 free
+    % 
+    % :param line: line object to be fixed
+    % :param lines: all 4 lines
+end
+
+function lines = update_lines(fixed, lines)
+    % update the 4 spider lines depending on new line 
+    
+    
+end
