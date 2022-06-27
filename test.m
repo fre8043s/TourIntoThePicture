@@ -1,4 +1,4 @@
-image = imread('..\\..\\CV-Challenge-22-Datensatz\\oil-painting.png');
+image = imread('CV-Challenge-22-Datensatz\\oil-painting.png');
 imshow(image);
 hold on
 % specify the outer rectangle
