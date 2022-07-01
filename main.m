@@ -15,9 +15,9 @@ function mask = update_mask(subtract, main_mask, new_mask)
     % added/removed
     % :param subtract: boolean 0=add, 1=subtract
     if (subtract)
-        mask = main_mask - new_mask;
+        mask = min(main_mask - new_mask, 0);
     else
-        mask = main_mask + new_mask;
+        mask = max(main_mask + new_mask, 1);
     end
 end
 
