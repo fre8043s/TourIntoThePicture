@@ -1,0 +1,21 @@
+function img = fillimage(points)
+    s = size(points, 1);
+
+    points(:, 1:2) = -points(:, 1:2);
+    
+    sizex = max(points(:,1)) - min(points(:, 1)) + 1;
+    sizey = max(points(:,2)) - min(points(:, 2)) + 1;
+    
+    % shift points by negative 
+    points(:
+    
+    sizex = ceil(sizex);
+    sizey = ceil(sizey);
+
+    g = NaN(sizey, sizex, 3);
+    
+    for i = 1:s
+        g(int32(points(i, 2))+1, int32(points(i, 1))+1, :) = points(i, 3:5);
+    end
+    img = g;
+end

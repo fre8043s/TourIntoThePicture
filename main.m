@@ -1,11 +1,23 @@
-var;
+clear;
+clc;
+% var;
+
+world = readmatrix('world/world.txt');
+color = readmatrix('color/color.txt');
+
+Table = [world, color];
+
 imageSize = [1152, 829];
-pos = [imageSize(1), imageSize(2), 2000];
-ang = [0, 0];
-
-
+pos = [1*imageSize(1), 1*imageSize(2), 2800];
+ang = [-30, -30];
 
 projected = projection(Table, pos, ang);
+
+projected = ([-1, 0, 0, 0, 0;
+              0, 1, 0, 0, 0;
+              0, 0, 1, 0, 0;
+              0, 0, 0, 1, 0;
+              0, 0, 0, 0, 1] * projected')';
 
 % scatter(projected(:,1),projected(:,2),20,projected(:,3:5)./255,'fill');
 % axis equal;
@@ -19,7 +31,7 @@ projected = projection(Table, pos, ang);
 % subplot(1,2,2);
 % scatter(projected(:,1),projected(:,2),40,projected(:,3:5)/255,'fill');
 % axis equal;
-% % camproj('perspective');
+% camproj('perspective');
 % title('Points projected with camera model');
 
 ret = fillimage(projected);
@@ -47,6 +59,6 @@ recombinedimg(:, :, 1) = uint8(ret_r);
 recombinedimg(:, :, 2) = uint8(ret_g);
 recombinedimg(:, :, 3) = uint8(ret_b);
 
-% imtool(recombinedimg) 
-imshow(recombinedimg);
+imtool(recombinedimg) 
+% imshow(recombinedimg);
 % imwrite(ret, "oil_top_right.png");
