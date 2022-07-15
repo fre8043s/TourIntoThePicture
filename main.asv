@@ -1,9 +1,0 @@
-var;
-imageSize = [1152, 829];
-campos = [imageSize(1)/2, imageSize(2)/2, 1000];
-camangle = [0, 0];
-
-
-
-projected = projection(Table, campos, camangle);
-
