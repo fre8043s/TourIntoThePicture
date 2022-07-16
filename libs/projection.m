@@ -1,6 +1,12 @@
 function points2d = projection(points, pos, ang)
-    % campos [x, y, z]
-    % ang [x, y]
+    %  Project a 3D world on to a 2D image for a certain viewing point
+    %
+    % :param points: 3D points in M x 6 Matrix [x, y, z, r,  g, b]
+    % :param pos: Camera Position Vector [x, y, z]
+    % :param ang:  Camera Angle Vector pitch, yaw [rotx, roty] (right hand rule for angle sign)
+    
+    % :return points2d: 2D Points Vector [x', y', r, g, b]
+
     f = 1000;
     pitch = ang(1) * pi/180;
     yaw = ang(2) * pi/180;
@@ -28,9 +34,9 @@ function points2d = projection(points, pos, ang)
     K = Rotx * Roty * A;
     coords = (K * [world';ones(1, s)])';
 
-    % Remove points behind camera
+    % Remove points behind image plane
     for i = 1:s
-        if coords(i, 3) < 0
+        if coords(i, 3) < f
             coords(i, :) = [nan, nan, nan];
             colors(i, :) = [nan, nan, nan];
         end

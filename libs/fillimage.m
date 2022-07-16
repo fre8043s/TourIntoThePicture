@@ -1,7 +1,11 @@
 function img = fillimage(points)
-    % points M x 5 (x, y, r, g, b)
+    % Create an Image Matrix from a list (matrix) of points with
+    % corresponding colors
+    % 
+    % :param points: M x 5 [x, y, r, g, b]
     %
-    % img sizey x sizex x 3
+    % :return img: Image matrix size_y x size_x x 3 [r, g, b]
+    
     s = size(points, 1);
 
     points(:, 1:2) = -points(:, 1:2);

@@ -1,5 +1,7 @@
 clear;
 clc;
+% addpath('./libs')
+addpath(genpath(pwd))
 % var;
 
 world = readmatrix('world/world.txt');
@@ -8,7 +10,7 @@ color = readmatrix('color/color.txt');
 Table = [world, color];
 
 imageSize = [1152, 829];
-pos = [1*imageSize(1), 1*imageSize(2), 2800];
+pos = [1*imageSize(1), 1*imageSize(2), 2.5*max(imageSize)];
 ang = [-30, -30];
 
 projected = projection(Table, pos, ang);
