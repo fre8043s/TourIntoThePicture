@@ -4,7 +4,7 @@ function points2d = projection(points, pos, ang)
     % :param points: 3D points in M x 6 Matrix [x, y, z, r,  g, b]
     % :param pos: Camera Position Vector [x, y, z]
     % :param ang:  Camera Angle Vector pitch, yaw [rotx, roty] (right hand rule for angle sign)
-    
+    %
     % :return points2d: 2D Points Vector [x', y', r, g, b]
 
     f = 1000;
