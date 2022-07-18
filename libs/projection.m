@@ -35,15 +35,11 @@ function points2d = projection(points, pos, ang)
     coords = (K * [world';ones(1, s)])';
 
     % Remove points behind image plane
-    i = 1; 
-    while i <= s
+    for i = 1:s
         if coords(i, 3) < f
-            coords(i, :) = [];
-            colors(i, :) = [];
-            i = i - 1;
-            s = s - 1;
+            coords(i, :) = [nan, nan, nan];
+            colors(i, :) = [nan, nan, nan];
         end
-        i = i + 1;
     end
     
     % Project on 2d plane
