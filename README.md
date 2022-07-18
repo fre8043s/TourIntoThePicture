@@ -9,3 +9,9 @@ Documentation using [Sphinx](https://www.sphinx-doc.org/en/master/) syntax, foll
 coordinates as in [info](./info/coordinates.png)
 
 icons from [here](https://www.flaticon.com/uicons)
+
+HOWTO:
+
+Open Matlab
+
+run main.m
