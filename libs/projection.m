@@ -1,4 +1,4 @@
-function points2d = projection(points, pos, ang)
+function points2d = projection(points, pos, ang, f)
     %  Project a 3D world on to a 2D image for a certain viewing point
     %
     % :param points: 3D points in M x 6 Matrix [x, y, z, r,  g, b]
@@ -7,7 +7,7 @@ function points2d = projection(points, pos, ang)
     %
     % :return points2d: 2D Points Vector [x', y', r, g, b]
 
-    f = 1000;
+    
     pitch = ang(1) * pi/180;
     yaw = ang(2) * pi/180;
     
