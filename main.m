@@ -799,32 +799,32 @@ classdef main < matlab.apps.AppBase
 %             % TODO
 %         end
 
-        % Value changed function: CamXSlider
-%         function CamXSliderValueChanged(app, event)
-%             app.update_CameraPoint();
-%         end
-% 
-%         % Value changed function: CamYSlider
-%         function CamYSliderValueChanged(app, event)
-%             app.update_CameraPoint();            
-%         end
-% 
-%         % Value changed function: CamZSlider
-%         function CamZSliderValueChanged(app, event)
-%             app.update_CameraPoint();
-%         end
-% 
-%         % Value changed function: PitchSlider
-%         function PitchSliderValueChanged(app, event)
-%             value = app.PitchSlider.Value;
-%             
-%         end
-% 
-%         % Value changed function: YawSlider
-%         function YawSliderValueChanged(app, event)
-%             value = app.YawSlider.Value;
-%             
-%         end
+%         Value changed function: CamXSlider
+        function CamXSliderValueChanged(app, event)
+            app.update_CameraPoint();
+        end
+
+        % Value changed function: CamYSlider
+        function CamYSliderValueChanged(app, event)
+            app.update_CameraPoint();            
+        end
+
+        % Value changed function: CamZSlider
+        function CamZSliderValueChanged(app, event)
+            app.update_CameraPoint();
+        end
+
+        % Value changed function: PitchSlider
+        function PitchSliderValueChanged(app, event)
+            value = app.PitchSlider.Value;
+            
+        end
+
+        % Value changed function: YawSlider
+        function YawSliderValueChanged(app, event)
+            value = app.YawSlider.Value;
+            
+        end
 
         % Button pushed function: RenderImageButton
         function RenderImageButtonPushed(app, event)
@@ -833,7 +833,7 @@ classdef main < matlab.apps.AppBase
             pause(0.01)
             pos = [app.CamXSlider.Value / 100 * size(app.InputImage, 2), 
                    app.CamYSlider.Value / 100 * size(app.InputImage, 1),
-                   app.CamZSlider.Value / 100 * max(app.points3D_and_colormap(:, 3)) + 1000]; %TODO replace 1000 with f
+                   app.CamZSlider.Value /  50 * max(app.points3D_and_colormap(:, 3)) + 1000]; %TODO replace 1000 with f
             ang = [app.PitchSlider.Value, app.YawSlider.Value];
             projected = projection(app.points3D_and_colormap, pos, ang);
 
@@ -975,7 +975,7 @@ classdef main < matlab.apps.AppBase
             app.CamZSlider.Enable = 'off';
             app.CamZSlider.Tooltip = {'Choose camera y position in percentage of image size'};
             app.CamZSlider.Position = [90 350 200 3];
-            app.CamZSlider.Value = 100;
+            app.CamZSlider.Value = 50;
 
             % Create PitchSliderLabel
             app.PitchSliderLabel = uilabel(app.ButtonGroup);
