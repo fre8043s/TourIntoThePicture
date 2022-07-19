@@ -4,9 +4,6 @@ classdef main < matlab.apps.AppBase
     properties (Access = public)
         UIFigure                    matlab.ui.Figure
         Toolbar                     matlab.ui.container.Toolbar
-        PushTool                    matlab.ui.container.toolbar.PushTool
-        PushTool2                   matlab.ui.container.toolbar.PushTool
-        ToggleTool2                 matlab.ui.container.toolbar.ToggleTool
         ToggleTool                  matlab.ui.container.toolbar.ToggleTool
         GridLayout                  matlab.ui.container.GridLayout
         ButtonGroup                 matlab.ui.container.ButtonGroup
@@ -724,31 +721,9 @@ classdef main < matlab.apps.AppBase
             end
         end
 
-        % Clicked callback: PushTool
-        function PushToolClicked(app, event)
-            [file,path,FilterIndex] = uigetfile('*.*','Select an Image File');
-            if FilterIndex == 0
-                return;
-            end
-            app.InputImage = imread(fullfile(path,file));
-            app.startupFcn();
-            imshow(app.InputImage,'Parent',app.UIAxes);
-            app.specify_OuterRectangle();
-            app.initialize_RearWindow_and_VanishPoint();
-            [rows,cols,~]=size(app.InputImage);
-            app.cell_with3Dpoints=cell(rows,cols);
-            app.cell_with3Dpoints(:,:)={0};
-            app.flag3DModel=false;
-        end
+       
 
-        % Clicked callback: PushTool2
-        function PushTool2Clicked(app, event)
-            app.stop_motion_VP_RL = true;
-            app.clear_drawing('all');
-            app.specify_Polygons();
-            app.calculate3Dverticies();
-            app.flag3DModel=true;
-        end
+      
 
         % On callback: ToggleTool
         function ToggleToolOn(app, event)
@@ -760,25 +735,7 @@ classdef main < matlab.apps.AppBase
             app.space = false;
         end
 
-        % On callback: ToggleTool2
-        function ToggleTool2On(app, event)
-            try
-                xlim(app.UIAxes,[min(app.Verticies(1,:)),max(app.Verticies(1,:))]);
-                ylim(app.UIAxes,[min(app.Verticies(2,:)),max(app.Verticies(2,:))]);
-            catch
-            end
-        end
-
-        % Off callback: ToggleTool2
-        function ToggleTool2Off(app, event)
-            try
-                xlim(app.UIAxes,'tickaligned');
-                ylim(app.UIAxes,'tickaligned');
-            catch
-            end
-        end
-
-        % Button pushed function: OpenFileButton
+           % Button pushed function: OpenFileButton
         function OpenFileButtonPushed(app, event)
             [file,path,FilterIndex] = uigetfile('*.png;*.tif;*bmp;*gif;*.jpg','Select an Image File');
             if FilterIndex == 0
@@ -935,30 +892,11 @@ classdef main < matlab.apps.AppBase
 
             % Create Toolbar
             app.Toolbar = uitoolbar(app.UIFigure);
-
-            % Create PushTool
-            app.PushTool = uipushtool(app.Toolbar);
-            app.PushTool.Tag = 'Open';
-            app.PushTool.ClickedCallback = createCallbackFcn(app, @PushToolClicked, true);
-            app.PushTool.Icon = 'C:\Users\walee\OneDrive\Documents\_Uni\master\Computer Vision\TourIntoThePicture\Icon\pngfind.com-folder-icon-png-transparent-4558801.png';
-
-            % Create PushTool2
-            app.PushTool2 = uipushtool(app.Toolbar);
-            app.PushTool2.Tooltip = {'press this if you are done specifying the grid'; ''};
-            app.PushTool2.ClickedCallback = createCallbackFcn(app, @PushTool2Clicked, true);
-            app.PushTool2.Icon = 'C:\Users\walee\OneDrive\Documents\_Uni\master\Computer Vision\TourIntoThePicture\Icon\Bl3bbrOW3L.png';
-
-            % Create ToggleTool2
-            app.ToggleTool2 = uitoggletool(app.Toolbar);
-            app.ToggleTool2.Tooltip = {'Zoom Picture after specifying Grid'};
-            app.ToggleTool2.Icon = 'C:\Users\walee\OneDrive\Documents\_Uni\master\Computer Vision\TourIntoThePicture\Icon\jD3ARR0Pqb.png';
-            app.ToggleTool2.OffCallback = createCallbackFcn(app, @ToggleTool2Off, true);
-            app.ToggleTool2.OnCallback = createCallbackFcn(app, @ToggleTool2On, true);
-
+        
             % Create ToggleTool
             app.ToggleTool = uitoggletool(app.Toolbar);
             app.ToggleTool.Tooltip = {'Enable the movement for lower radial line (holding space bar has same functionality)'; ''};
-            app.ToggleTool.Icon = 'C:\Users\walee\OneDrive\Documents\_Uni\master\Computer Vision\TourIntoThePicture\Icon\84-847218_computer-mouse-computer-icons-pointer-point-and-click-cursor-drag-and-drop.png';
+            app.ToggleTool.Icon = '84-847218_computer-mouse-computer-icons-pointer-point-and-click-cursor-drag-and-drop.png';
             app.ToggleTool.OffCallback = createCallbackFcn(app, @ToggleToolOff, true);
             app.ToggleTool.OnCallback = createCallbackFcn(app, @ToggleToolOn, true);
 
