@@ -20,7 +20,7 @@ classdef main < matlab.apps.AppBase
         CamXSliderLabel             matlab.ui.control.Label
         CamYSlider                  matlab.ui.control.Slider
         CamYSliderLabel             matlab.ui.control.Label
-        CreateForegroundMaskButton  matlab.ui.control.Button
+%         CreateForegroundMaskButton  matlab.ui.control.Button
         CreateGridModelButton       matlab.ui.control.Button
         OpenFileButton              matlab.ui.control.Button
         UIAxes                      matlab.ui.control.UIAxes
@@ -222,16 +222,16 @@ classdef main < matlab.apps.AppBase
         end
 
         % update camera position
-        function update_CameraPoint(app)
-            cam = [app.CamXSlider.Value / 100 * size(app.InputImage, 2), app.CamYSlider.Value / 100 * size(app.InputImage, 1), max(app.points3D_and_colormap(:, 3)), 0, 0, 0];
-            ang = [app.PitchSlider.Value, app.YawSlider.Value];
-            orig = [0.5 * size(app.InputImage, 2), 
-                   0.5 * size(app.InputImage, 1),
-                   2.5 * max(app.points3D_and_colormap(:, 3))]; %TODO +1000?
-%             temp = projection(cam, orig, ang);
-%             app.CameraPoint  = ([-1, 0; 0, size(app.InputImage, 1) - 1] * temp(1:2)');
-%             set(app.draw_cam,'Position',app.CameraPoint')
-        end
+%         function update_CameraPoint(app)
+%             cam = [app.CamXSlider.Value / 100 * size(app.InputImage, 2), app.CamYSlider.Value / 100 * size(app.InputImage, 1), max(app.points3D_and_colormap(:, 3)), 0, 0, 0];
+%             ang = [app.PitchSlider.Value, app.YawSlider.Value];
+%             orig = [0.5 * size(app.InputImage, 2), 
+%                    0.5 * size(app.InputImage, 1),
+%                    2.5 * max(app.points3D_and_colormap(:, 3))]; %TODO +1000?
+% %             temp = projection(cam, orig, ang);
+% %             app.CameraPoint  = ([-1, 0; 0, size(app.InputImage, 1) - 1] * temp(1:2)');
+% %             set(app.draw_cam,'Position',app.CameraPoint')
+%         end
               
         % specify the imagined edges of outer rectangle and return the five polygons
         function specify_Polygons(app)
@@ -310,12 +310,12 @@ classdef main < matlab.apps.AppBase
             % we take both values and take the average as the heigth
             vector_8_minus_7=app.Verticies(:,8)-app.Verticies(:,7);
             vector_11_minus_7=app.Verticies(:,11)-app.Verticies(:,7);
-            solution_2_by_2_system_of_equations1=inv([[0;1] vector_8_minus_7])*vector_11_minus_7;
+            solution_2_by_2_system_of_equations1=[[0;1] vector_8_minus_7]\vector_11_minus_7;
             height1=solution_2_by_2_system_of_equations1(1);
             % second height value: 
             vector_3_minus_4=app.Verticies(:,3)-app.Verticies(:,4);
             vector_12_minus_4=app.Verticies(:,12)-app.Verticies(:,4);
-            solution_2_by_2_system_of_equations2=inv([[0;1] vector_3_minus_4])*vector_12_minus_4;
+            solution_2_by_2_system_of_equations2=[[0;1] vector_3_minus_4]\vector_12_minus_4;
             height2=solution_2_by_2_system_of_equations2(1);
             H=(height1+height2)/2;
             % assign 3D points 7 and 8 
@@ -325,13 +325,13 @@ classdef main < matlab.apps.AppBase
             % with similar and the existing system of equations
             vector_5_minus_4=app.Verticies(:,5)-app.Verticies(:,4);
             vector_12_minus_4=app.Verticies(:,12)-app.Verticies(:,4);
-            solution_2_by_2_system_of_equations3=inv([[0;1] vector_5_minus_4])*vector_12_minus_4;   
+            solution_2_by_2_system_of_equations3=[[0;1] vector_5_minus_4]\vector_12_minus_4;   
             % point 9:
             app.verticies3Dvalues=[app.verticies3Dvalues; [0 H ((1/solution_2_by_2_system_of_equations3(2))*app.depth_estimation)]];
             % same goes for point 10:
             vector_6_minus_7=app.Verticies(:,6)-app.Verticies(:,7);
             vector_11_minus_7=app.Verticies(:,11)-app.Verticies(:,7);
-            solution_2_by_2_system_of_equations4=inv([[0;1] vector_6_minus_7])*vector_11_minus_7;
+            solution_2_by_2_system_of_equations4=[[0;1] vector_6_minus_7]\vector_11_minus_7;
             % point 10:
             app.verticies3Dvalues=[app.verticies3Dvalues; [width_of_scene H ((1/solution_2_by_2_system_of_equations4(2))*app.depth_estimation)]];
             % depth of points 11 and 12 is already given in
@@ -400,11 +400,11 @@ classdef main < matlab.apps.AppBase
                 %calculate x and z (width)
                 Verticies_10_minus_11=app.Verticies(:,10)-app.Verticies(:,11);
                 Verticies_10_minus_point=[app.Verticies(1,10)-x; app.Verticies(2,10)-y];
-                first_solution=inv([[1;0] Verticies_10_minus_11])*Verticies_10_minus_point;
+                first_solution=[[1;0] Verticies_10_minus_11]\Verticies_10_minus_point;
                 
                 Verticies_1_minus_12=app.Verticies(:,1)-app.Verticies(:,12);
                 Verticies_1_minus_point=[app.Verticies(1,1)-x; app.Verticies(2,1)-y];
-                second_solution=inv([[-1;0] Verticies_1_minus_12])*Verticies_1_minus_point;
+                second_solution=[[-1;0] Verticies_1_minus_12]\Verticies_1_minus_point;
                 
                 width_of_point=width_of_scene*(second_solution(1)/(first_solution(1)+second_solution(1)));
                 %average of both depth calculations
@@ -422,11 +422,11 @@ classdef main < matlab.apps.AppBase
                 %calculate x and z (width)
                 Verticies_7_minus_6=app.Verticies(:,7)-app.Verticies(:,6);
                 Verticies_7_minus_point=[app.Verticies(1,7)-x; app.Verticies(2,7)-y];
-                first_solution=inv([[1;0] Verticies_7_minus_6])*Verticies_7_minus_point;
+                first_solution=[[1;0] Verticies_7_minus_6]\Verticies_7_minus_point;
                 
                 Verticies_4_minus_5=app.Verticies(:,4)-app.Verticies(:,5);
                 Verticies_4_minus_point=[app.Verticies(1,4)-x; app.Verticies(2,4)-y];
-                second_solution=inv([[-1;0] Verticies_4_minus_5])*Verticies_4_minus_point;
+                second_solution=[[-1;0] Verticies_4_minus_5]\Verticies_4_minus_point;
                 
                 width_of_point=width_of_scene*(first_solution(1)/(first_solution(1)+second_solution(1)));
                 %average of both depth calculations
@@ -444,11 +444,11 @@ classdef main < matlab.apps.AppBase
                 %calculate y and z 
                 Verticies_7_minus_8=app.Verticies(:,7)-app.Verticies(:,8);
                 Verticies_7_minus_point=[app.Verticies(1,7)-x; app.Verticies(2,7)-y];
-                first_solution=inv([[0;-1] Verticies_7_minus_8])*Verticies_7_minus_point;
+                first_solution=[[0;-1] Verticies_7_minus_8]\Verticies_7_minus_point;
                 
                 Verticies_10_minus_9=app.Verticies(:,10)-app.Verticies(:,9);
                 Verticies_10_minus_point=[app.Verticies(1,10)-x; app.Verticies(2,10)-y];
-                second_solution=inv([[0;1] Verticies_10_minus_9])*Verticies_10_minus_point;
+                second_solution=[[0;1] Verticies_10_minus_9]\Verticies_10_minus_point;
                 
                 height_of_point=height_of_scene*(second_solution(1)/(first_solution(1)+second_solution(1)));
                 %average of both depth calculations
@@ -465,10 +465,10 @@ classdef main < matlab.apps.AppBase
                 % calculate y and z 
                 Verticies_4_minus_3=app.Verticies(:,4)-app.Verticies(:,3);
                 Verticies_4_minus_point=[app.Verticies(1,4)-x; app.Verticies(2,4)-y];
-                first_solution=inv([[0;-1] Verticies_4_minus_3])*Verticies_4_minus_point;
+                first_solution=[[0;-1] Verticies_4_minus_3]\Verticies_4_minus_point;
                 Verticies_1_minus_2=app.Verticies(:,1)-app.Verticies(:,2);
                 Verticies_1_minus_point=[app.Verticies(1,1)-x; app.Verticies(2,1)-y];
-                second_solution=inv([[0;1] Verticies_1_minus_2])*Verticies_1_minus_point;
+                second_solution=[[0;1] Verticies_1_minus_2]\Verticies_1_minus_point;
                 height_of_point=height_of_scene*(second_solution(1)/(first_solution(1)+second_solution(1)));
                 % average of both depth calculations
                 depth_of_point=depth_of_scene*(first_solution(2)*(second_solution(1)/(first_solution(1)+second_solution(1)))+second_solution(2)*(first_solution(1)/(first_solution(1)+second_solution(1))));
@@ -680,14 +680,6 @@ classdef main < matlab.apps.AppBase
             app.UIFigure.WindowStyle = 'normal';
         end
 
-        % Callback function
-        function UIFigureWindowButtonDown(app, event)
-            tf = strcmp(app.UIFigure.SelectionType, 'normal');
-            if tf == 1 % left click of the mouse
-            %%%% emsa7!!!!!!!   TODO
-            end
-        end
-
         % Window button motion function: UIFigure
         function UIFigureWindowButtonMotion(app, event)
             % update the VP
@@ -803,36 +795,36 @@ classdef main < matlab.apps.AppBase
         end
 
         % Button pushed function: CreateForegroundMaskButton
-        function CreateForegroundMaskButtonPushed(app, event)
-            % TODO
-        end
+%         function CreateForegroundMaskButtonPushed(app, event)
+%             % TODO
+%         end
 
         % Value changed function: CamXSlider
-        function CamXSliderValueChanged(app, event)
-            app.update_CameraPoint();
-        end
-
-        % Value changed function: CamYSlider
-        function CamYSliderValueChanged(app, event)
-            app.update_CameraPoint();            
-        end
-
-        % Value changed function: CamZSlider
-        function CamZSliderValueChanged(app, event)
-            app.update_CameraPoint();
-        end
-
-        % Value changed function: PitchSlider
-        function PitchSliderValueChanged(app, event)
-            value = app.PitchSlider.Value;
-            
-        end
-
-        % Value changed function: YawSlider
-        function YawSliderValueChanged(app, event)
-            value = app.YawSlider.Value;
-            
-        end
+%         function CamXSliderValueChanged(app, event)
+%             app.update_CameraPoint();
+%         end
+% 
+%         % Value changed function: CamYSlider
+%         function CamYSliderValueChanged(app, event)
+%             app.update_CameraPoint();            
+%         end
+% 
+%         % Value changed function: CamZSlider
+%         function CamZSliderValueChanged(app, event)
+%             app.update_CameraPoint();
+%         end
+% 
+%         % Value changed function: PitchSlider
+%         function PitchSliderValueChanged(app, event)
+%             value = app.PitchSlider.Value;
+%             
+%         end
+% 
+%         % Value changed function: YawSlider
+%         function YawSliderValueChanged(app, event)
+%             value = app.YawSlider.Value;
+%             
+%         end
 
         % Button pushed function: RenderImageButton
         function RenderImageButtonPushed(app, event)
@@ -868,11 +860,6 @@ classdef main < matlab.apps.AppBase
             imtool(recombinedimg);
             app.loadingLabel.Visible = false;
             app.loadingIcon.Visible = false;
-        end
-
-        % Callback function
-        function UIFigureWindowButtonDown2(app, event)
-        %%%% emsa7!!!!!!!   TODO
         end
     end
 
@@ -939,14 +926,14 @@ classdef main < matlab.apps.AppBase
             app.CreateGridModelButton.Text = 'Create Grid Model';
 
             % Create CreateForegroundMaskButton
-            app.CreateForegroundMaskButton = uibutton(app.ButtonGroup, 'push');
-            app.CreateForegroundMaskButton.ButtonPushedFcn = createCallbackFcn(app, @CreateForegroundMaskButtonPushed, true);
-            app.CreateForegroundMaskButton.Icon = 'flower-tulip.png';
-            app.CreateForegroundMaskButton.Enable = 'off';
-            app.CreateForegroundMaskButton.Visible = 'off';
-            app.CreateForegroundMaskButton.Tooltip = {'Creates a 3D Model of the 5 rectangles specified by the grid'};
-            app.CreateForegroundMaskButton.Position = [77 500 190 30];
-            app.CreateForegroundMaskButton.Text = 'Create Foreground Mask';
+%             app.CreateForegroundMaskButton = uibutton(app.ButtonGroup, 'push');
+%             app.CreateForegroundMaskButton.ButtonPushedFcn = createCallbackFcn(app, @CreateForegroundMaskButtonPushed, true);
+%             app.CreateForegroundMaskButton.Icon = 'flower-tulip.png';
+%             app.CreateForegroundMaskButton.Enable = 'off';
+%             app.CreateForegroundMaskButton.Visible = 'off';
+%             app.CreateForegroundMaskButton.Tooltip = {'Creates a 3D Model of the 5 rectangles specified by the grid'};
+%             app.CreateForegroundMaskButton.Position = [77 500 190 30];
+%             app.CreateForegroundMaskButton.Text = 'Create Foreground Mask';
 
             % Create CamYSliderLabel
             app.CamYSliderLabel = uilabel(app.ButtonGroup);
